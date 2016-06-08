@@ -6,6 +6,7 @@
 
 //splはThe Standard PHP Library (SPL)と言う意味です。
 
+/*おまじあない?*/
 spl_autoload_register(function ($class_name){
    include $class_name. '.php';
     
