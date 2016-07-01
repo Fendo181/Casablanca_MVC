@@ -2,6 +2,10 @@
 
 class Request{
     
+    
+    /*
+    HTTPメソッドがPOSTか確認する。
+    */
     public function isPost(){
         
         if($_SERVER['REQUEST_METHOD']==='PPST'){
@@ -11,6 +15,9 @@ class Request{
         return false;
     }
     
+    /*
+    $_GET変数から値受け取る。
+    */
     public function getGet($name,$default=null){
         if(isset($_GET[$name])){
             return $_GET[$name];
@@ -19,6 +26,10 @@ class Request{
         return $default;
     }
     
+    
+    /*
+    $_POST変数から値を受け取る。
+    */
     public function getPost($name,$default=null){
         if(isset($_POST[$name])){
         return $_POST[$name];
@@ -27,6 +38,9 @@ class Request{
         return $default;
     }
     
+    /*
+    サーバのホスト名を取得するメソッド
+    */
     public function getHost(){
         if(!empty($_SERVER['HTTP_HOST'])){
             return $_SERVER['HTTP_HOST'];
@@ -35,7 +49,13 @@ class Request{
         return $_SERVER['SERVER_NMAE'];
     }
     
+    /*
+    HTTPSメソッドでアクセスされたか確認するメソッドです。
+    */
     public function isSsl(){
+        /*
+        HTTPSメソッドでonにと言う文字が含まれるので、それを判定します。
+        */
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ==='on'){
             return true;
         }
@@ -43,11 +63,15 @@ class Request{
         return false;
     }
     
+    /*
+     リクエストされたURLの情報を$_SERVER['REQUEST_URI']に格納します。
+    */
     public function getRequestUri(){
         return $_SERVER['Request_URI'];
         
     }
     
+
     public function getBaseUrl(){
         $script_name=$_SERVER['SCRIPT_NAME'];
         
