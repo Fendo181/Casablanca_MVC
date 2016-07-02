@@ -10,6 +10,8 @@ abstract class Application
     protected $session;
     protected $db_manager;
     
+    protected $login_action = array();
+    
     
     public function __constrct($debug = false){
         $this -> setDebugMode($debug);
@@ -46,6 +48,18 @@ abstract class Application
         $this->db_manager = new DbManager();
         
         $this ->route =new Router($this->registerRoutes());
+    }
+    
+    protected function run()
+    {
+        try{
+            
+        }catch(HttpNotFoundException $e){
+            $this ->render404Pages($e);
+        }catch(UnauthorizedActionException $e){
+            list($controller,$action) = $this ->login_action;
+            $this ->runAction($controller,$action);
+        }
     }
     
     protected function configure()
@@ -104,7 +118,13 @@ abstract class Application
             //***
         }catch(HttpNotFoundException $e){
             $this -> render404Page($e);
+            
+        }catch(UnauthorizedActionException $e){  //Applicationログイン画面の制御
+            list($controller,$action) = $this ->login_action;
+            $this ->runAction($controller,$action);
         }
+        
+        
         protected function render404Page($e)
         {
             $this -> response->setStatusCode(404,'Not Found');
