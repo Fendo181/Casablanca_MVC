@@ -54,5 +54,6 @@ ver 0.1 [2016_0702]
 
 ##__参考文献__
 >
-パーフェクトPHP 第5,6,f7章(技術評論社)
-独習PHP　第3版
+パーフェクトPHP 第5,6,f7章(技術評論社)  
+独習PHP　第3版  
+[interfaceとは](http://blog.tojiru.net/article/377526320.html)
