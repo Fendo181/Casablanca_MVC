@@ -1,6 +1,6 @@
 <?php
 
-/*編集 2016年7月1日*/
+
 
 abstract class Application
 {

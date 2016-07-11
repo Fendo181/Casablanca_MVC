@@ -13,15 +13,21 @@
 
 class ClassLoader{
     
-    protected $dirs;
+    protected $dirs; //ディレクトリ登録用の変数。
     
     /*
     PHPにオートローダクラスを登録する処理にあたります。
     従ってregister()が呼び出される時に
     コールバック関数の引数として
     loadClass()が呼び出すようにしています(?)
+    */
     
-    いや多分違う
+    /*
+    こては何?
+    
+    
+    
+    
     */
     public function register(){
         spl_autoload_register(array($this,'loadClass'));

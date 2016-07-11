@@ -1,5 +1,16 @@
 <?php
 
+
+/*
+Requestクラスはユーザからのリクエスト情報を制御するクラスです。
+
+主な機能としては
+1.HTPPメソッド($_GET/$_POST)などの値を取得
+2.リクエストされたURLの取得
+3.サーバのホスト名やSSLでのアクセスなのかを判定する機能
+4.フロントコントローラを採用している為、URLに関する情報も取得します。
+*/
+
 class Request{
     
     
@@ -75,11 +86,15 @@ class Request{
     public function getBaseUrl(){
         $script_name=$_SERVER['SCRIPT_NAME'];
         
+        //クラス内でメソッド呼び出し。
         $request_uri=$this->getRequestUri();
         
         //strops()が一番高速で正規マッチを行う
         if(0 ===strpos($request_uri,$script_name)){
             return $script_name;
+            /*
+            dirname()はファイルのパスからディレクトリ部分を抜き出すメソッドです。/
+            */
         }else if(0 === strpos($request_uri,dirname($script_name))){
             return rtrim(dirname($script_name),'/');
         }
