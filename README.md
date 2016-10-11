@@ -51,9 +51,15 @@ ver 0.1 [2016_0702]
 - 各クラスやメソッドの遷移が頭で描けるように何度もこれから読む。
 - PHPでの[オブジェクト指向](https://github.com/Fendo181/Casablanca_MVC/tree/master/PHPStudy)の概念の触りは理解できたが、まだまだ書いて理解する。
 
+ver 0.12 [2016_09022]
+- 余計なコメントを消去
+- ブログサービスを実装した。
+
+
+
 
 ##__参考文献__
 >
-パーフェクトPHP 第5,6,f7章(技術評論社)  
+パーフェクトPHP 5,6,7章(技術評論社)  
 独習PHP　第3版  
 [interfaceとは](http://blog.tojiru.net/article/377526320.html)

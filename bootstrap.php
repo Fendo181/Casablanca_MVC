@@ -1,12 +1,11 @@
 <?php
 
-
-require 'core/ClassLoder.php';
+require(dirname(__FILE__) . "/core/ClassLoder.php");
 
 //インスタンス生成
 $loder=new ClassLoader();
 
-//registerDirメソュドを呼び出し。coreとmodelsから呼び出せるようにする。
+//registerDirメソッドを呼び出し。coreとmodelsから呼び出せるようにする。
 $loder->registerDir(dirname(__FILE__),'/core');
 $loder->registerDir(dirname(__FILE__),'/models');
 
@@ -16,7 +15,3 @@ $loder->registerDir(dirname(__FILE__),'/models');
 外部からクラスを読み込める準備ができました。
 */
 $loder->register();
-
-
-
-?>
