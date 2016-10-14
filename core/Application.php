@@ -101,7 +101,7 @@ abstract class Application
             if ($params === false){
                 // todo A なにこれ?(例外処理)
                 // print "hello wold!"
-                throw new HttpNotFoundException();
+                throw new HttpNotFoundException('No route found for' .$this->request->getPathInfo());
             }
         $controller = $params['controller'];
         $action = $params['action'];
