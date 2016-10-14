@@ -1,6 +1,6 @@
 <?php
 
-require(dirname(__FILE__) . "/core/ClassLoder.php");
+require(dirname(__FILE__) . "/core/ClassLoader.php");
 
 //インスタンス生成
 $loder=new ClassLoader();

@@ -71,7 +71,8 @@ class Request{
      リクエストされたURLの情報を$_SERVER['REQUEST_URI']に格納します。
     */
     public function getRequestUri(){
-        return $_SERVER['Request_URI'];
+
+        return $_SERVER['REQUEST_URI'];
     }
 
     public function getBaseUrl(){
@@ -94,7 +95,7 @@ class Request{
     public function getPathInfo(){
 
         $base_url=$this->getBaseUrl();
-        var_dump("TEST");
+        // var_dump("TEST");
         $request_uri=$this->getRequestUri();
 
         if(false !== ($pos=strpos($request_uri,'?'))){

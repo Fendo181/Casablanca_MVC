@@ -20,7 +20,7 @@ public function connect($name,$params){
         $params['options']
     );
 
-    $con->setAttribute(PDO::ATTR_ERRMODE,PDD::ERRMODE_EXCEPTIION);
+    $con->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
     $this->connections[$name] =$con;
 }

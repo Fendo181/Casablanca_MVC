@@ -1,7 +1,7 @@
 <?php
 
-class Response{
-
+class Response
+{
     protected $content;
     protected $status_code = 200;
     protected $status_text = 'ok!';
@@ -32,6 +32,4 @@ class Response{
     public function setHttpHeader($name,$value){
         $this->http_head[$name] = $value;
     }
-
-
 }

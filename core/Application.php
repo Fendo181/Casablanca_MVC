@@ -1,5 +1,11 @@
 <?php
 
+require(dirname(__FILE__) . "/Request.php");
+require(dirname(__FILE__) . "/Response.php");
+require(dirname(__FILE__) . "/Session.php");
+require(dirname(__FILE__) . "/DbManager.php");
+require(dirname(__FILE__) . "/Router.php");
+require(dirname(__FILE__) . "/HttpNotFoundException.php");
 
 
 abstract class Application
@@ -37,20 +43,16 @@ abstract class Application
 
     protected function initialize(){
 
-        // こでやっている事は正直初期化なのであるけど...
-
         $this->request = new Request();
-        $this->request = new Response();
-        $this->request = new Session();
+        $this->response = new Response();
+        $this->session = new Session();
         $this->db_manager = new DbManager();
-
-        $this ->route =new Router($this->registerRoutes());
+        $this ->router =new Router($this->registerRoutes());
     }
 
 
     protected function configure()
     {
-
     }
 
     abstract public function getRootDir();
@@ -94,57 +96,24 @@ abstract class Application
     ここでは変数$paramsにRouteクラスのresolveメソッドを呼び出し、ルーティングパラメータを取得しコントローラ名とアクション名を特定します。それらを元にRunActionメソッドを呼び出してアクションを実行します。
     */
     public function run(){
-
-        $params =$this->route->resolve($this->request->getPathInfo());
-        $this ->response->send();
+        try{
+            $params =$this->router->resolve($this->request->getPathInfo());
+            if ($params === false){
+                // todo A なにこれ?(例外処理)
+                // print "hello wold!"
+                throw new HttpNotFoundException();
+            }
         $controller = $params['controller'];
         $action = $params['action'];
 
-        //runActionメソッド
         $this ->runAction($controller,$action,$params);
-
-        $this ->response->send();
-
-        if ($params === false){
-            // todo A なにこれ?(例外処理)
-            throw new HttpNotFoundException('No route found for'.$this->request->getPathInfo());
+    }catch(HttpNotFoundException $e){
+        $this -> render404Page($e);
+    }catch(UnauthorizedActionException $e){  //Applicationログイン画面の制御
+        list($controller,$action) = $this ->login_action;
+        $this ->runAction($controller,$action);
         }
-        try{
-            //***
-        }catch(HttpNotFoundException $e){
-            $this -> render404Page($e);
-
-        }catch(UnauthorizedActionException $e){  //Applicationログイン画面の制御
-            list($controller,$action) = $this ->login_action;
-            $this ->runAction($controller,$action);
-        }
-    }
-
-
-        protected   function render404Page($e)
-        {
-            $this -> response->setStatusCode(404,'Not Found');
-            $message =$this -> isDebugMode() ? $e ->getMessage() : 'Page not founnd';
-            $message =$this -> htmlspecialchars($message,ENT_QUOTES,'UTF-8');
-
-
-        $this->response->setContent(
-        /*HTML構文*/
-
-        // <!DOCTYPE html>
-        // <html>
-        // <head lang="ja">
-        // <title>404 NotFound</title>
-        // <meta charset="UTF-8">
-        // <meta name="description" content="" />
-        // <meta name="keywords" content="" />
-        // </head>
-        // <body>
-        //     {$message}
-        // </body>
-        // </html>
-
-    );
+    $this ->response->send();
     }
 
 
@@ -192,4 +161,26 @@ abstract class Application
 
     return new $controller_class($this);
     }
+    protected function render404Page($e)
+    {
+        $this->response->setStatusCode(404, 'Not Found');
+        $message = $this->isDebugMode() ? $e->getMessage() : 'Page not found.';
+        $message = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+
+        $this->response->setContent(<<<EOF
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>404</title>
+</head>
+<body>
+    {$message}
+</body>
+</html>
+EOF
+        );
+    }
+
 }
