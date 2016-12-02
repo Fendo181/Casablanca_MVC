@@ -1,5 +1,7 @@
 <?php
 
+var_dump("Request.php");
+
 
 /*
 Requestクラスはユーザからのリクエスト情報を制御するクラスです。

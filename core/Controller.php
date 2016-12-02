@@ -1,5 +1,7 @@
 <?php
 
+var_dump("controller.php");
+
 abstract class Controller{
 
     protected $controller_name;
@@ -13,6 +15,7 @@ abstract class Controller{
     //runメソッド拡張の為の変数
     protected $auth_actions = array();
 
+    // コンストラクタ
     public function _construct($application){
 
         $this->controller_name = strtolower(substr(get_class($this),0,-100));
@@ -24,7 +27,7 @@ abstract class Controller{
         $this->db_manager = $application ->getDbManager();
     }
 
-
+    // アクション実行メソッド
     public function run($action,$paams=array()){
         $this ->action_name =$action;
 
@@ -38,30 +41,20 @@ abstract class Controller{
         UnauthorizedActionException例外を通知します。
         */
 
-        if($this->needsAuthentication($action) && !this->session-> isAuthenticated())
+        if($this->needsAuthentication($action) && !$this->session=isAuthenticated())
         {
             throw new UnauthorizedActionException();
         }
 
         $content = $this -> $actions_method($params);
-
         return $content;
-    }
-
-    protected function needsAuthentication($action){
-        if(this->auth_actions === true
-           || (is_array($this->auth_actions) && in_array($action,$this->auth_actions))
-           ){
-            return true;
-        }
-            return false;
     }
 
     /*
     レンダーメソッド
     */
 
-    protected function render($variables = array(),$template = null,$layout = 'layout');
+    protected function render($variables = array(),$template = null,$layout = 'layout')
     {
         $defaults = array(
             'request' => $this ->request,
@@ -73,7 +66,7 @@ abstract class Controller{
         if(!is_null($template)){
             $template = $this->action_name;
         }
-        $path = $this ->controller.'/'.$template;
+        $path = $this ->controller_name.'/'.$template;
         return $view->render($path,$variables,$layouts);
     }
 
@@ -88,6 +81,10 @@ abstract class Controller{
     }
 
 
+    /**
+     * 指定されたURLへリダイレクト
+     *
+     */
     protected function redirect($url){
         if(!preg_match('$https?://$',$url)){
             $protocol =$this -> request->isSsl()? 'https//' : 'http://';
@@ -100,6 +97,8 @@ abstract class Controller{
         $this -> response->setStatusCode(302,'Found');
         $this -> response->setHttpHeder('Location',$url);
     }
+
+
 
     /*
     CSRF対策
@@ -133,6 +132,21 @@ abstract class Controller{
 
         return false;
         }
-    }
 
+        /**
+         * 指定されたアクションが認証済みでないとアクセスできないか判定
+         *
+         * @param string $action
+         * @return boolean
+         */
+
+    protected function needsAuthentication($action){
+        if($this->auth_actions === true
+           || (is_array($this->auth_actions) && in_array($action,$this->auth_actions))
+         ){
+            return true;
+        }
+
+        return false;
+    }
 }

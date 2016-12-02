@@ -1,5 +1,8 @@
 <?php
 
+var_dump("Router.php");
+
+
 Class Router{
 
     protected $routes;

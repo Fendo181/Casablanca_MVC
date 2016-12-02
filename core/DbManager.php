@@ -1,5 +1,6 @@
 <?php
 
+var_dump("DbManager.php");
 
 class DbManager{
 

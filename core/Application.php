@@ -1,24 +1,25 @@
 <?php
 
-require(dirname(__FILE__) . "/Request.php");
-require(dirname(__FILE__) . "/Response.php");
-require(dirname(__FILE__) . "/Session.php");
-require(dirname(__FILE__) . "/DbManager.php");
-require(dirname(__FILE__) . "/Router.php");
-require(dirname(__FILE__) . "/HttpNotFoundException.php");
+
+var_dump("Application.php");
+
+// これをauto_loadrで上手く使いたいね
+// require(dirname(__FILE__) . "/Request.php");
+// require(dirname(__FILE__) . "/Router.php");
+// require(dirname(__FILE__) . "/Session.php");
+// require(dirname(__FILE__) . "/HttpNotFoundException.php");
+// require(dirname(__FILE__) . "/DbManager.php");
+// require(dirname(__FILE__) . "/Response.php");
 
 
 abstract class Application
 {
     protected $debug = false;
     //  これは今作った
-    protected $route;
     protected $request;
     protected $response;
     protected $session;
     protected $db_manager;
-
-    protected $login_action = array();
 
 
     public function __construct($debug = false){
@@ -50,12 +51,23 @@ abstract class Application
         $this ->router =new Router($this->registerRoutes());
     }
 
-
+    /**
+     * アプリケーションの設定
+     */
     protected function configure()
     {
+
     }
 
+    /**
+     * プロジェクトのルートディレクトリを取得
+     *
+     * @return string ルートディレクトリへのファイルシステム上の絶対パス
+     */
+
     abstract public function getRootDir();
+
+
 
     abstract protected function registerRoutes();
 
@@ -69,11 +81,21 @@ abstract class Application
     }
 
     public function getResponse(){
-        return $this ->session;
+        return $this ->response;
+    }
+
+    public function getSession()
+    {
+        return $this->session;
     }
 
     //DB周りの操作を行う。
-    public function getDbManager(){
+    public function getDbManager()
+    {
+    return $this->db_manager;
+    }
+
+    public function getCoontrollerDir(){
         return $this ->getRootDir().'/controller';
     }
 
@@ -130,7 +152,6 @@ abstract class Application
         $controller =$this->findController($controller_class);
         if($controller == false){
             // todoB(例外処理)
-
             throw new HttpNotFoundException($controller_class.'controller is not found!');
         }
 
@@ -153,7 +174,7 @@ abstract class Application
         }else{
             //読み込み部分
             require_once $controller_file;
-            if(!class_exits($controller_class)){
+            if(!class_exists($controller_class)){
                 return false;
             }
         }

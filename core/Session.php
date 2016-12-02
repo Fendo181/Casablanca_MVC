@@ -1,5 +1,8 @@
 <?php
 
+var_dump("Session.php");
+
+
 /**
  * Session.
  *
@@ -23,7 +26,7 @@ class Session
         }
     }
 
-    
+
 
     /**
      * セッションに値を設定

@@ -1,5 +1,8 @@
 <?php
 
+var_dump("View.php");
+
+
 class View
 {
 
@@ -62,7 +65,7 @@ class View
         }
         return $content;
     }
-    
+
     public function escape($string){
         return htmlspecialchars($string,ENT_QUOTES,'UTF-8');
     }
